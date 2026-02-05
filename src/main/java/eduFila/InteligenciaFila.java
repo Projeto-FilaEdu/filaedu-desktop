@@ -59,7 +59,6 @@ public class InteligenciaFila {
 	private JLabel contagem;
 	public VideoCapture cap;
 	public JButton botaoIniciar;
-	public boolean todosObjetos;
 	public int cameraSelecionada;
 	
 	public Integer contadorPessoas;
@@ -139,7 +138,6 @@ public class InteligenciaFila {
 		menuBar.add(contagem);
 		jframe.setVisible(true);
 		
-		chamarApiComTimer();
 	}
 
 	protected void SelecionarVideo() {
@@ -161,7 +159,7 @@ public class InteligenciaFila {
 			}
 			
 			cap = new VideoCapture(arquivoSelecionado + "");
-			processarVideo("files\\yolov7-tiny.weights", "files\\yolov7-tiny.cfg", arquivoSelecionado + "", todosObjetos);
+			processarVideo("files\\yolov7-tiny.weights", "files\\yolov7-tiny.cfg", arquivoSelecionado + "");
 			
 		} else {
 			System.out.println("nenhum arquivo encontrado");
@@ -175,10 +173,11 @@ public class InteligenciaFila {
 
 	protected void IniciarGravacao() {
 		cap = new VideoCapture(cameraSelecionada, Videoio.CAP_DSHOW);
-		processarVideo("files\\yolov7-tiny.weights", "files\\yolov7-tiny.cfg", "file\\teste.mp4", todosObjetos);
+		processarVideo("files\\yolov7-tiny.weights", "files\\yolov7-tiny.cfg", "file\\teste.mp4");
+		chamarApiComTimer();
 	}
 
-	public void processarVideo(String modelWeights, String modelConfiguration, String filePath, boolean todosObjetos) {
+	public void processarVideo(String modelWeights, String modelConfiguration, String filePath) {
 		SwingWorker<Void, String> worker = new SwingWorker<Void, String>() {
 			@Override
 			protected Void doInBackground() throws Exception {
@@ -220,12 +219,12 @@ public class InteligenciaFila {
 							// Adiciona objetos com confianca acima do limite, considerando a classe
 							// "pessoa" apenas se `todosObjetos` for verdadeiro
 							if (confidence > confThreshold
-									&& (todosObjetos || (label.equals("pessoa") && !todosObjetos))) {
+									&& label.equals("pessoa")) {
 								Rect2d box = getBoundingBox(row, frame.cols(), frame.rows());
 								confs.add(confidence);
 								rects.add(box);
 								labels.add(label);
-								contagem.setText("Quantidade de objetos: ");
+								contagem.setText("Quantidade de Pessoas: ");
 							}
 						}
 
@@ -257,12 +256,8 @@ public class InteligenciaFila {
 					        }
 					        
 					    }
-					    
-					    if(todosObjetos == true) {
-				        	contagem.setText("Quantidade de Objetos: " + ind.length); // mostrando a quantidade de Objetos no label
-				        } else {
-				        	contagem.setText("Quantidade de Pessoas: " + contadorPessoas); // mostrando a quantidade de pessoas no label
-				        }
+				    
+			        	contagem.setText("Quantidade de Pessoas: " + contadorPessoas); // mostrando a quantidade de pessoas no label
 					    
 					} else {
 						contadorPessoas = 0;
