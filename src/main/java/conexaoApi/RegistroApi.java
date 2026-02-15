@@ -5,6 +5,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 public class RegistroApi {
 
@@ -30,7 +32,7 @@ public class RegistroApi {
             }
             """.formatted(
                     lojaId,
-                    LocalDateTime.now(),
+                    OffsetDateTime.now(ZoneOffset.of("-03:00")),
                     totalAcumulado
             );
 
