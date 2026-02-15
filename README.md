@@ -80,12 +80,6 @@ Certifique-se de que o backend esteja rodando em:
 
     http://localhost:8080
 
-Caso a URL da API seja configurável, ajuste o arquivo correspondente no projeto.
-
-Exemplo:
-
-    api.base.url=http://localhost:8080
-
 ## Importando o projeto no Eclipse
 
 1. Abra o Eclipse
